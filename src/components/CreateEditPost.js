@@ -14,14 +14,19 @@ const CreateEditPost = ({ post, onSubmit }) => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"))
     setUser(user);
-    // const post = axios.post("http://localhost:5001/post/getpost",{id:post_id}).then(res=>{
-    //   setSinglePost(res.data);
-    // })
+    if(post_id){
+
+      axios.post("http://localhost:5001/post/getpost",{id:post_id}).then(res=>{
+        setSinglePost(res.data);
+        setTitle(res.data.title);
+        setContent(res.data.postcontent)
+      })
+    }
     if (singlePost) {
       setTitle(singlePost.title);
-      setContent(singlePost.content);
+      setContent(singlePost.postcontent);
     }
-  }, [singlePost, post_id]);
+  }, [ post_id]);
 
  
   const handleSubmit = (e) => {
@@ -31,19 +36,33 @@ const CreateEditPost = ({ post, onSubmit }) => {
       postcontent : content,
       title: title,
     })
-    axios.post("http://localhost:5001/post/createpost",{
-      userID: user?._id,
-      postcontent : content,
-      title: title,
-    }).then(res=>{
-      console.log(res.data);
-    })
+    if(!post_id){
+
+      axios.post("http://localhost:5001/post/createpost",{
+        userID: user?._id,
+        postcontent : content,
+        title: title,
+      }).then(res=>{
+        console.log(res.data);
+        window.location.href="/"
+      })
+    } else{
+      axios.post("http://localhost:5001/post/updatepost",{
+        id:post_id,
+        userID: user?._id,
+        postcontent : content,
+        title: title,
+      }).then(res=>{
+        console.log(res.data);
+        window.location.href="/"
+      })
+    }
   };
 
   return (
     <div className={styles.formContainer}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h2>{post ? 'Edit Post' : 'Create New Post'}</h2>
+        <h2>{post_id ? 'Edit Post' : 'Create New Post'}</h2>
         <div className={styles.inputGroup}>
           <input
             type="text"
@@ -62,7 +81,7 @@ const CreateEditPost = ({ post, onSubmit }) => {
           />
         </div>
         <button type="submit" className={styles.submitButton}>
-          {post ? 'Update' : 'Create'} Post
+          {post_id ? 'Update' : 'Create'} Post
         </button>
       </form>
     </div>

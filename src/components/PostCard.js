@@ -1,8 +1,10 @@
 // PostCard.js
 import React from 'react';
 import styles from '../css/PostCard.module.css';
+import { useParams } from 'react-router-dom';
 
 const PostCard = ({ id, title, content, date, user, onDelete }) => {
+
 
   const onEdit = (post_id) =>{
     window.location.href = `/edit/${post_id}`;
@@ -11,10 +13,10 @@ const PostCard = ({ id, title, content, date, user, onDelete }) => {
     <div className={styles.card}>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.content}>{content}</p>
-      <div className={styles.meta}>
+      {/* <div className={styles.meta}>
         <span>Posted on: {new Date(date).toLocaleDateString()}</span>
         <span>By: {user}</span>
-      </div>
+      </div> */}
       <div className={styles.actions}>
         <button onClick={() => onEdit(id)} className={styles.editButton}>Edit</button>
         <button onClick={() => onDelete(id)} className={styles.deleteButton}>Delete</button>

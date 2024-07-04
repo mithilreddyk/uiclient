@@ -19,7 +19,7 @@ root.render(
         <Route exact path="/" Component={Homepage} />
         <Route exact path="/login" Component={LoginForm} />
         <Route exact path="/register" Component={RegisterForm} />
-        <Route exact path="/create-post" Component={CreateEditPost} />
+        <Route exact path="/create" Component={CreateEditPost} />
         <Route exact path="/edit/:post_id" Component={CreateEditPost} />
       </Routes>
     </BrowserRouter>
